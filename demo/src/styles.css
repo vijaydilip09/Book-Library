@@ -1,0 +1,12 @@
+/* You can add global styles to this file, and also import other style files */
+html,body {
+    /* background-color: #ffaa00; */
+    background-image: url("https://t3.ftcdn.net/jpg/02/51/39/56/240_F_251395687_lHi4KNiOMlMPuwizugIADwQawuN13Fwe.jpg");
+    /* Full height */
+  height: 100%;
+
+/* Center and scale the image nicely */
+background-position: center;
+background-repeat: no-repeat;
+background-size: cover;
+  }

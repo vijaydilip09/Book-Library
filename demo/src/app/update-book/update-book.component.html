@@ -1,0 +1,28 @@
+<div class="col-md-6 offset-md-3">
+    <h3> Update Employee </h3>
+    <form (ngSubmit) = "onSubmit()">
+     
+        <div class="form-group">
+            <label> Book Title</label>
+            <input type="text" class ="form-control" id = "BookTitle"
+                [(ngModel)] = "book.bookTitle" name = "Book Title">
+        </div>
+    
+        <div class="form-group">
+            <label> Author Name</label>
+            <input type="text" class ="form-control" id = "authorName"
+                [(ngModel)] = "book.authorName" name = "Author Name">
+        </div>
+    
+        
+        <div class="form-group">
+            <label> Publication Year</label>
+            <input type="text" class ="form-control" id = "publicationYear"
+                [(ngModel)] = "book.publicationYear" name = "Publication Year">
+        </div>
+    
+
+        <button class = "btn btn-success" type ="submit">Submit</button>
+    
+    </form>
+    </div> 

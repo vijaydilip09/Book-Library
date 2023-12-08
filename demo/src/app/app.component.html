@@ -1,0 +1,46 @@
+<style>
+
+
+  .navbar {
+    background-color: #4caf50; /* Green background color */
+  }
+
+  .navbar-nav {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+  }
+
+  .nav-item {
+    padding: 10px;
+  }
+
+  .nav-link {
+    color: white;
+    text-decoration: none;
+    font-size: 1.2em;
+  }
+
+  /* Style the active link */
+  .nav-item.active {
+    background-color: #45a049; /* Darker green for active link */
+  }
+
+  /* Style the link on hover */
+  .nav-link:hover {
+    color: #e6ffe6; /* Lighter green on hover */
+  }
+</style>
+<body>
+  <nav class="navbar navbar-expand-sm bg-warning">
+    <a [routerLink]="['/books']" class="nav-link">Book List</a>
+    <a routerLink="create-books" routerLinkActive="active" class="nav-link"
+      >Add Books</a
+    >
+  </nav>
+
+  <div class="container">
+    <router-outlet></router-outlet>
+    <!-- <app-book-list></app-book-list> -->
+  </div>
+</body>
