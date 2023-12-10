@@ -11,14 +11,15 @@ import { BookFilter } from '../book-filter';
   styleUrls: ['./book-list.component.css']
 })
 export class BookListComponent implements OnInit {
-  
+  items: any[];
+  isAscending: boolean = true;
 
   filter = new BookFilter();
   book: Book;
-  books: Book[];
+  books: any[];
   enteredId: number;
   currentPage: number = 1;
-pageSize: number = 4;
+  pageSize: number = 4;
 
   // displayedColumns: string[] = ['id', 'bookTitle', 'authorName', 'publicationYear'];
   // dataSource = new MatTableDataSource<Book>();
@@ -42,12 +43,27 @@ pageSize: number = 4;
     });
   }
 
+  sortTable(field: string) {
+    this.books.sort((a, b) => {
+      const aValue = a[field];
+      const bValue = b[field];
+      if (this.isAscending) {
+        return aValue - bValue;
+      } else {
+        return bValue - aValue;
+      }
+    });
+    this.isAscending = !this.isAscending;
+  }
+
   // In your component class
 paginatedBooks(): any[] {
   const startIndex = (this.currentPage - 1) * this.pageSize;
   const endIndex = startIndex + this.pageSize;
   return this.books.slice(startIndex, endIndex);
 }
+
+
 
 previousPage() {
   if (this.currentPage > 1) {

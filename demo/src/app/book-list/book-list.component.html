@@ -1,72 +1,133 @@
-<h1 style="text-align: center;">Books</h1>
-<div class="d-flex justify-content-center align-items-center">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"
+        integrity="sha512-KvCKFuIXdRQB3J1Jw1rFoAXh/OJpy9txF5u5ePi0khRR5DOvE+Zc7yFFVQbP4uUZfkojrAGkkCk5o3Okr5b8KA=="
+        crossorigin="anonymous">
+    
+/></head>
 
-    <div class="book-details-container bg-light p-3 border rounded" style="text-align: center;">
-    
-<div class="form-group">
-        <input type="number" type="number" [(ngModel)]="enteredId" placeholder="Enter Book ID">
-        <button class="btn btn-warning" (click)="searchById()">Search</button>
-        <br><br>
-</div>
-        
-<div *ngIf="book && book.id === enteredId">
-    <table mat-table class="table table-striped">
-        <thead>
-            <tr>
-                <th> Id</th>
-                <th> Book Title</th>
-                <th> Author Name</th>
-                <th> Publication Year</th>
-                <th> Actions</th> 
-            </tr>
-        </thead>
-        <tbody>
-                <td> {{ book.id}} </td>
-                <td> {{ book.bookTitle}} </td>
-                <td> {{ book.authorName}} </td>
-                <td> {{ book.publicationYear}} </td>
-                <td> 
-                    <button (click) = "updateBook(book.id)" class="btn btn-info"> Edit </button>
-                    <button (click) = "deleteBook(book.id)" class="btn btn-danger"> Delete </button>
-                    <button (click) = "bookDetails(book.id)" class="btn btn-submit"> View </button>
-    
-                </td>
-    
-            <!-- </tr> -->
-        </tbody>
-    </table>
+
+
+<h1 style="text-align: center">Books</h1>
+<style>
+  .arrow-up::before {
+    content: "\25B2";
+  }
+  .arrow-down::before {
+    content: "\25BC";
+  }
+</style>
+<div class="d-flex justify-content-center align-items-center">
+  <div
+    class="book-details-container bg-light p-3 border rounded"
+    style="text-align: center"
+  >
+    <div class="form-group">
+      <input
+        type="number"
+        type="number"
+        [(ngModel)]="enteredId"
+        placeholder="Enter Book ID"
+      />
+      <button class="btn btn-warning" (click)="searchById()">Search</button>
+      <br /><br />
     </div>
 
+    <div *ngIf="book && book.id === enteredId">
+      <table mat-table class="table table-striped">
+        <thead>
+          <tr>
+            <th>Id</th>
+            <th>Book Title</th>
+            <th>Author Name</th>
+            <th>Publication Year</th>
 
-<table *ngIf="!book || !enteredId " class="table table-striped">
-    <thead>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <td>{{ book.id }}</td>
+          <td>{{ book.bookTitle }}</td>
+          <td>{{ book.authorName }}</td>
+          <td>{{ book.publicationYear }}</td>
+          <td>
+            <!-- <button (click)="updateBook(book.id)" class="btn btn-info">
+              Edit
+            </button>
+            <button (click)="deleteBook(book.id)" class="btn btn-danger">
+              Delete
+            </button>
+            <button (click)="bookDetails(book.id)" class="btn btn-submit">
+              View
+
+              
+            </button> -->
+
+            <button (click)="updateBook(book.id)" class="btn btn-info">
+                <i class="fas fa-edit"></i>
+              </button>
+              
+              <button (click)="deleteBook(book.id)" class="btn btn-danger">
+                <i class="fas fa-trash-alt"></i>
+              </button>
+              
+              <button (click)="bookDetails(book.id)" class="btn btn-submit">
+                <i class="fas fa-eye"></i>
+              </button>
+
+              
+          </td>
+
+          <!-- </tr> -->
+        </tbody>
+      </table>
+    </div>
+
+    <table *ngIf="!book || !enteredId" class="table table-striped">
+      <thead>
         <tr>
-            <th> Id</th>
-            <th> Book Title</th>
-            <th> Author Name</th>
-            <th> Publication Year</th>
-            <th> Actions</th> 
+          <th>Id</th>
+          <th>Book Title</th>
+          <th>Author Name</th>
+          <th>
+            Publication Year
+            <button style="border: none; background: none; cursor: pointer;" (click)="sortTable('publicationYear')">
+              <span
+                [ngClass]="{
+                  'arrow-up': isAscending,
+                  'arrow-down': !isAscending
+                }"
+              ></span>
+            </button>
+          </th>
+
+          <!-- <th (click)="sortTable('publicationYear')"> Publication Year</th> -->
+          <th>Actions</th>
         </tr>
-    </thead>
-    <tbody> 
-            <tr *ngFor="let book of paginatedBooks()">
-            <td> {{ book.id}} </td>
-            <td> {{ book.bookTitle}} </td>
-            <td> {{ book.authorName}} </td>
-            <td> {{ book.publicationYear}} </td>
-            <td> 
-                <button (click) = "updateBook(book.id)" class="btn btn-info"> Edit </button>
-                <button (click) = "deleteBook(book.id)" class="btn btn-danger"> Delete </button>
-                <button (click) = "bookDetails(book.id)" class="btn btn-submit"> View </button>
-
-            </td>
-
+      </thead>
+      <tbody>
+        <tr *ngFor="let book of paginatedBooks()">
+          <td>{{ book.id }}</td>
+          <td>{{ book.bookTitle }}</td>
+          <td>{{ book.authorName }}</td>
+          <td>{{ book.publicationYear }}</td>
+          <td>
+            <button (click)="updateBook(book.id)" class="btn btn-info">
+              Edit
+            </button>
+            <button (click)="deleteBook(book.id)" class="btn btn-danger">
+              Delete
+            </button>
+            <button (click)="bookDetails(book.id)" class="btn btn-submit">
+              View
+            </button>
+          </td>
         </tr>
-    </tbody>
-</table>
-<!-- Add these buttons where you want the pagination controls to appear -->
-<button class="btn btn-secondary" (click)="previousPage()">Previous</button>
-<button class="btn btn-secondary" (click)="nextPage()">Next</button>
-
-
-</div></div>
+      </tbody>
+    </table>
+    <!-- Add these buttons where you want the pagination controls to appear -->
+    <button class="btn btn-primary" (click)="previousPage()">Previous</button>
+    <button class="btn btn-secondary" (click)="nextPage()">Next</button>
+  </div>
+</div>
