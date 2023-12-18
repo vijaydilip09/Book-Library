@@ -1,5 +1,4 @@
 import { ExtraOptions, PreloadAllModules, Routes } from '@angular/router';
-import { HomeComponent } from './home/home.component';
 import { BookListComponent } from './book-list/book-list.component';
 import { CreateBookComponent } from './create-book/create-book.component';
 import { UpdateBookComponent } from './update-book/update-book.component';

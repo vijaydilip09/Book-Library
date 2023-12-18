@@ -1,0 +1,39 @@
+.search-form {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    max-width: 400px;
+    margin: auto;
+  }
+  
+  .form-group {
+    display: flex;
+  }
+  
+  input[type="text"] {
+    flex: 1;
+    padding: 8px;
+    box-sizing: border-box;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+  }
+  
+label {
+    margin-left: 109px; /* Adjust the margin as needed */
+    padding-right: 90px; 
+  }
+  
+  
+  .warning {
+    padding: 10px;
+    background-color: #ffc107;
+    color: #333;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+  
+  .warning:hover {
+    background-color: #ffcd39;
+  }
+  

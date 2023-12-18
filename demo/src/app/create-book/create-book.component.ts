@@ -9,34 +9,23 @@ import { Router } from '@angular/router';
   templateUrl: './create-book.component.html',
   styleUrls: ['./create-book.component.css']
 })
-export class CreateBookComponent implements OnInit{
+export class CreateBookComponent implements OnInit {
   book: Book = new Book();
-  constructor(private bookService : BookService,
-  private router: Router)
-    
-  { }
-
-  ngOnInit(): void {
-    
+  constructor(private bookService: BookService,
+    private router: Router) { }
+  ngOnInit(): void { }
+  onSubmit() {
+    this.saveBook();
   }
-
-  saveBook(){
+  saveBook() {
     this.bookService.createBook(this.book).subscribe(data => {
       console.log(data);
       this.goToBookList();
-  },
-  error => console.log(error));
-}
+    },
+      error => console.log(error));
+  }
 
-  goToBookList()
-  {
+  goToBookList() {
     this.router.navigate(['/books']);
   }
-  onSubmit()
-  {
-    console.log(this.book);
-    this.saveBook();
-
-  }
-
 }

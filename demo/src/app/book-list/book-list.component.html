@@ -23,18 +23,41 @@
     class="book-details-container bg-light p-3 border rounded"
     style="text-align: center"
   >
-    <div class="form-group">
-      <input
-        type="number"
-        type="number"
-        [(ngModel)]="enteredId"
-        placeholder="Enter Book ID"
-      />
-      <button class="btn btn-warning" (click)="searchById()">Search</button>
-      <br /><br />
-    </div>
 
-    <div *ngIf="book && book.id === enteredId">
+
+  <div class="form-group">
+    <input
+      type="text"
+      [(ngModel)]="enteredId"
+      placeholder="Enter search term"
+    />
+    <button class="warning" (click)="search()">Search</button>
+    </div>
+<div>
+    <br />
+    <label>
+      <input type="radio" [(ngModel)]="searchCriteria" value="id" />
+      Book ID
+    </label>
+    <label>
+      <input type="radio" [(ngModel)]="searchCriteria" value="author" />
+      Author Name
+    </label>
+    <label>
+      <input type="radio" [(ngModel)]="searchCriteria" value="name" />
+      Book Title
+    </label>
+
+</div>
+<br />
+
+<div *ngIf="invalidSearchCriteria" class="error-message">
+  Invalid search criteria. Please select a valid option.
+</div>
+
+
+ <!-- <div *ngIf="book"> -->
+  <div *ngIf="book && enteredId || !books">
       <table mat-table class="table table-striped">
         <thead>
           <tr>
@@ -52,7 +75,7 @@
           <td>{{ book.authorName }}</td>
           <td>{{ book.publicationYear }}</td>
           <td>
-            <!-- <button (click)="updateBook(book.id)" class="btn btn-info">
+            <button (click)="updateBook(book.id)" class="btn btn-info">
               Edit
             </button>
             <button (click)="deleteBook(book.id)" class="btn btn-danger">
@@ -60,23 +83,7 @@
             </button>
             <button (click)="bookDetails(book.id)" class="btn btn-submit">
               View
-
-              
-            </button> -->
-
-            <button (click)="updateBook(book.id)" class="btn btn-info">
-                <i class="fas fa-edit"></i>
-              </button>
-              
-              <button (click)="deleteBook(book.id)" class="btn btn-danger">
-                <i class="fas fa-trash-alt"></i>
-              </button>
-              
-              <button (click)="bookDetails(book.id)" class="btn btn-submit">
-                <i class="fas fa-eye"></i>
-              </button>
-
-              
+            </button>             
           </td>
 
           <!-- </tr> -->

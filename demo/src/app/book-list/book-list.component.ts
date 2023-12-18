@@ -2,7 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { Book } from '../book'
 import { BookService } from '../book.service'
 import { Router } from '@angular/router';
-import { BookFilter } from '../book-filter';
 
 
 @Component({
@@ -14,20 +13,22 @@ export class BookListComponent implements OnInit {
   items: any[];
   isAscending: boolean = true;
 
-  filter = new BookFilter();
   book: Book;
   books: any[];
-  enteredId: number;
+  enteredId: any;
+  // enteredAuthor: string;
+  // enteredBookName: string;
+
   currentPage: number = 1;
   pageSize: number = 4;
 
-  // displayedColumns: string[] = ['id', 'bookTitle', 'authorName', 'publicationYear'];
-  // dataSource = new MatTableDataSource<Book>();
-
-
-  // ngAfterViewInit() {
-  //   this.dataSource.paginator = this.paginator;
-  // }
+  searchTerm: string = '';
+searchTitle: boolean = false;
+searchAuthor: boolean = false;
+searchName: boolean = false;
+invalidSearchCriteria: boolean = false;
+  
+searchCriteria: string = 'title';
 
   constructor(private bookService: BookService,
     private router: Router) { }
@@ -37,7 +38,7 @@ export class BookListComponent implements OnInit {
     // this.search();
   }
 
-  private getBooks(){
+  private getBooks() {
     this.bookService.getBooksList().subscribe(data => {
       this.books = data;
     });
@@ -57,60 +58,127 @@ export class BookListComponent implements OnInit {
   }
 
   // In your component class
-paginatedBooks(): any[] {
-  const startIndex = (this.currentPage - 1) * this.pageSize;
-  const endIndex = startIndex + this.pageSize;
-  return this.books.slice(startIndex, endIndex);
-}
-
-
-
-previousPage() {
-  if (this.currentPage > 1) {
-    this.currentPage--;
+  paginatedBooks(): any[] {
+    const startIndex = (this.currentPage - 1) * this.pageSize;
+    const endIndex = startIndex + this.pageSize;
+    return this.books.slice(startIndex, endIndex);
   }
-}
 
-nextPage() {
-  const maxPage = Math.ceil(this.books.length / this.pageSize);
-  if (this.currentPage < maxPage) {
-    this.currentPage++;
+
+  previousPage() {
+    if (this.currentPage > 1) {
+      this.currentPage--;
+    }
   }
-}
 
+  nextPage() {
+    const maxPage = Math.ceil(this.books.length / this.pageSize);
+    if (this.currentPage < maxPage) {
+      this.currentPage++;
+    }
+  }
 
-   bookDetails(id: number){
-     this.router.navigate(['book-details', id]);
+  bookDetails(id: number) {
+    this.router.navigate(['book-details', id]);
+  }
+
+  
+  // ...
+  
+  search() {
+    console.log('enteredId',this.enteredId);
+    switch (this.searchCriteria) {
+      case 'id':
+        this.searchById();
+        break;
+      case 'author':
+        this.searchByAuthor();
+        break;
+      case 'name':
+        // Add the method for searching by name
+        this.searchByTitle();
+        break;
+      default:
+        this.invalidSearchCriteria = true;
+        console.error('Invalid search criteria');
+        break;
+    }
+  }
+  
+
+    searchById() {
+   if (this.enteredId) {
+     this.bookService.searchBookById(this.enteredId).subscribe(
+        result => {
+           this.book = result;
+          this.invalidSearchCriteria = false;
+            console.log('Book found:', result);
+         },
+
+    
+        
+         error => {
+          this.invalidSearchCriteria = true;
+           console.error('Error fetching book:', error);
+           // this.book = null; // Reset book on error
+         }
+       );
+     }
    }
 
-   searchById() {
+   searchByAuthor() {
     if (this.enteredId) {
-      this.bookService.getBookById(this.enteredId).subscribe(
+      this.bookService.searchBooksByAuthor(this.enteredId).subscribe(
         result => {
-          this.book = result;
-          console.log('Book found:', result);
-        },
+          if (Array.isArray(result) && result.length > 0) {
+            // this.book = result[0];
+            const numberOfElementsToCapture = 5; // Change this to your desired number
+            this.books = result.slice(0, numberOfElementsToCapture);
+            this.invalidSearchCriteria = false;
+            console.log('Books found:', this.books);            
+          } 
+        },  
         error => {
-          console.error('Error fetching book:', error);
-          // this.book = null; // Reset book on error
+          this.invalidSearchCriteria = true;
+          console.error('Error fetching books by author:', error);
         }
       );
     }
   }
 
-  updateBook(id: number){
+  searchByTitle() {
+    if (this.enteredId) {
+       this.bookService.searchBooksByTitle(this.enteredId).subscribe(
+        result => {
+          if (Array.isArray(result) && result.length > 0) {
+            // this.book = result[0];
+            const numberOfElementsToCapture = 5; // Change this to your desired number
+            this.books = result.slice(0, numberOfElementsToCapture);
+            this.invalidSearchCriteria = false;
+            console.log('Books found:', this.books);
+            console.log('Book found:', this.book);
+          } 
+        },    
+         error => {
+          this.invalidSearchCriteria = true;
+           console.error('Error fetching books by title:', error);
+         }
+       );
+     } 
+   }
+
+
+  updateBook(id: number) {
     this.router.navigate(['update-book', id]);
     console.log('hello');
   }
 
-  deleteBook(id: number)
-  {
-    this.bookService.deleteBook(id).subscribe( data =>{
+  deleteBook(id: number) {
+    this.bookService.deleteBook(id).subscribe(data => {
       console.log(data);
       this.getBooks();
     })
   }
 
 
-  
 }

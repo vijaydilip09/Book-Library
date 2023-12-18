@@ -1,16 +1,3 @@
-// import { Component } from '@angular/core';
-
-// @Component({
-//   selector: 'app-update-book',
-//   templateUrl: './update-book.component.html',
-//   styleUrls: ['./update-book.component.css']
-// })
-// export class UpdateBookComponent {
-
-// }
-
-
-
 import { Component, OnInit } from '@angular/core';
 import { Book } from '../book'
 import { BookService } from '../book.service';
@@ -31,7 +18,6 @@ export class UpdateBookComponent implements OnInit {
 
   ngOnInit(): void {
     this.id = this.route.snapshot.params['id'];
-
     this.bookService.getBookById(this.id).subscribe(data => {
       this.book = data;
       console.log('book',this.book);
