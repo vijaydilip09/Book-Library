@@ -1,8 +1,10 @@
 package com.src.java.booklibrary.controller;
 
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.atomic.AtomicLong;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -14,6 +16,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.src.java.booklibrary.exception.ResourceNotFoundException;
@@ -33,6 +36,7 @@ public class BookController {
 		return bookrepo.findAll();
 	}
 	
+	
 	@CrossOrigin(origins = "http://localhost:4200/")
 	@PostMapping("/books")
 	public Book createBook(@RequestBody Book book)
@@ -48,6 +52,29 @@ public class BookController {
 				orElseThrow(() -> new ResourceNotFoundException ("Book not exist with id: "+id));
 		return ResponseEntity.ok(book);
 	}
+	
+	@CrossOrigin(origins = "http://localhost:4200/")
+	 @GetMapping("/books/author/{author}")
+	    public ResponseEntity<List<Book>> getBooksByAuthor(@PathVariable String author) {
+	        List<Book> books = bookrepo.findByAuthorName(author);
+	        if (books.isEmpty()) {
+	            // Handle not found case
+	            return ResponseEntity.notFound().build();
+	        }
+	        return ResponseEntity.ok(books);
+	    }
+	
+	@CrossOrigin(origins = "http://localhost:4200/")
+	 @GetMapping("/books/Title/{title}")
+	    public ResponseEntity<List<Book>> getBooksByTitle(@PathVariable String title) {
+	        List<Book> books = bookrepo.findBybookTitle(title);
+	        if (books.isEmpty()) {
+	            // Handle not found case
+	            return ResponseEntity.notFound().build();
+	        }
+	        return ResponseEntity.ok(books);
+	    }
+	
 	
 	@CrossOrigin(origins = "http://localhost:4200/")
 	@PutMapping("/books/{id}")
@@ -76,9 +103,4 @@ public class BookController {
 		return ResponseEntity.ok(response);
 	
 	}
-	
-	
-	
-	
-	
 }
